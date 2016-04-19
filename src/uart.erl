@@ -217,7 +217,14 @@ options() ->
 		  {ok,uart()} | {error,term()}.
 
 open(DeviceName, Opts) ->
-    Path = code:priv_dir(uart),
+    Path = case code:priv_dir(uart) of
+        P when is_list(P) -> P;
+        {error, bad_name} ->
+            case code:which(?MODULE) of
+                F when is_list(F) -> filename:join([filename:dirname(F), "..", "priv");
+                _ -> "priv"                    
+            end
+    end,
     {Type,_} = os:type(),
     Driver = "uart_drv",
     case load_driver(Path, Driver) of
