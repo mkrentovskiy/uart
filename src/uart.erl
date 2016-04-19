@@ -221,7 +221,7 @@ open(DeviceName, Opts) ->
         P when is_list(P) -> P;
         {error, bad_name} ->
             case code:which(?MODULE) of
-                F when is_list(F) -> filename:join([filename:dirname(F), "..", "priv");
+                F when is_list(F) -> filename:join([filename:dirname(F), "..", "priv"]);
                 _ -> "priv"                    
             end
     end,
